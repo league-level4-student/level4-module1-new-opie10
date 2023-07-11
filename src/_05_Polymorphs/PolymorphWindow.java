@@ -5,6 +5,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -52,18 +56,23 @@ import javax.swing.Timer;
  *  clicked. Hint: MouseListener interface.
  */
 
-public class PolymorphWindow extends JPanel implements ActionListener {
+public class PolymorphWindow extends JPanel implements ActionListener,MouseListener {
 
     public static final int WIDTH = 900;
     public static final int HEIGHT = 600;
 
     private JFrame window;
     private Timer timer;
-
-    Polymorph bluePoly;
-
+    ArrayList<Polymorph>arr = new ArrayList<>();
+    RedPolymorph red = new RedPolymorph(50,50,40,40);
+    BluePolymorph blue = new BluePolymorph(100,50,40,40);
+    MovingMorph moving = new MovingMorph(150,50,40,40);
+    RedPolymorph redo = new RedPolymorph(200,50,40,40);
+    FollowingMorph fM = new FollowingMorph(250,50,40,40);
+    ClickMorph cM = new ClickMorph(300,50,40,40);
     public static void main(String[] args) {
         new PolymorphWindow().buildWindow();
+        
     }
 
     public void buildWindow() {
@@ -73,26 +82,71 @@ public class PolymorphWindow extends JPanel implements ActionListener {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.pack();
         window.setVisible(true);
-
-        bluePoly = new BluePolymorph(50, 50);
-
+       arr.add(blue);
+       arr.add(red);
+       arr.add(redo);
+       arr.add(moving);
+       arr.add(fM);
+       arr.add(cM);
         timer = new Timer(1000 / 30, this);
+        window.addMouseListener(cM);
+        window.addMouseMotionListener(fM);
         timer.start();
+       
+        
     }
 
     public void paintComponent(Graphics g) {
         // draw background
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, 500, 500);
-
+        
         // draw polymorph
-        bluePoly.draw(g);
+       for (int i = 0; i < arr.size(); i++) {
+		arr.get(i).draw(g);
+	}
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         repaint();
-        bluePoly.update();
+        for (int i = 0; i < arr.size(); i++) {
+    		arr.get(i).update();
+    	}
 
     }
+
+	@Override
+	public void mouseClicked(MouseEvent b) {
+		// TODO Auto-generated method stub
+	
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	
 }
